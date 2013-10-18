@@ -5,11 +5,15 @@ class _migration_name_ extends BaseMigration
 {
   public function up()
   {
-
+    // Enter the SQL to be executed here
+    $sql = '';
+    return $this->run_sql($sql);
   }
 
   public function down()
   {
-
+    // If you would like rollback capability, enter the SQL to roll back these changes here
+    $sql = '';
+    return $this->run_sql($sql);
   }
 }

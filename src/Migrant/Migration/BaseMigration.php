@@ -2,15 +2,16 @@
 namespace Migrant\Migration;
 
 use Migrant\Database\Database;
-use Migrant\Config\Config;
 
 class BaseMigration
 {
-  protected $sql;
+  protected $config;
+  protected $db;
 
-  public function __construct($sql = '')
+  public function __construct($config)
   {
-
+    $this->config = $config;
+    $this->db = new Database($config);
   }
 
   public function up()
@@ -18,8 +19,19 @@ class BaseMigration
 
   }
 
-  pulic function down()
+  public function down()
   {
 
+  }
+
+  public function run_sql($sql)
+  {
+    try
+    {
+      $result = $this->db->execute($sql);
+      return ['success' => true, 'results' => $result];
+    } catch (\PDOException $e) {
+      return ['success' => false, 'message' => 'Migration Failed! ' . $e->getMessage()];
+    }
   }
 }

@@ -3,6 +3,8 @@ namespace Migrant\Application;
 
 use Migrant\Console\ConsoleUtils;
 use Migrant\Config\Config;
+use Migrant\Database\Database;
+use Migrant\Migration\Migration;
 
 class MigrantApplication
 {
@@ -12,6 +14,7 @@ class MigrantApplication
   private $config;
 
   protected $available_commands = [
+    'init' => 'Prepare the configured database for use with migrant',
     'add <NAME>' => 'Create a new migration with the given name',
     'migrate' => 'Run all available migrations',
     'apply <MIGRATION>' => 'Run a specific migration',
@@ -61,6 +64,9 @@ class MigrantApplication
     {
       switch(strtolower($args[0]))
       {
+        case 'init':
+          $this->init();
+          break;
         case 'add':
           if (empty($args[1]))
             throw new \RuntimeException("No name specified for the migration!  php migrant help for available commands");
@@ -96,6 +102,37 @@ class MigrantApplication
   }
 
   /**
+   * Initialize the database for use with migrant.
+   *
+   */
+  private function init()
+  {
+    // Connect to the database
+    $db = new Database($this->config);
+
+    // Check the database to see if it has already been initialized.
+    $sql = 'SHOW TABLES LIKE "migrant_log"';
+    $result = $db->query($sql);
+
+    if (empty($result))
+    {
+      $sql = 'CREATE TABLE `identite_local_main`.`migrant_log` (
+              `migration_id` VARCHAR(255) NOT NULL,
+              `success` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
+              `executed` DATETIME NOT NULL,
+              `message` TEXT NULL,
+              PRIMARY KEY (`migration_id`))';
+      $result = $db->execute($sql);
+      if ($result != NULL)
+        $this->util->writeLine('Initialization Failed! ' . $result, 'red');
+      else
+        $this->util->writeLine('Migrant Initialized', 'green');
+    } else {
+      $this->util->writeLine("Migrant has already been initialized", 'yellow');
+    }
+  }
+
+  /**
    * Create a new migration
    *
    * @param string $name
@@ -121,7 +158,9 @@ class MigrantApplication
    */
   private function migrate()
   {
+    $migration = new Migration($this->config);
 
+    $migration->migrate();
   }
 
   /**
@@ -131,7 +170,7 @@ class MigrantApplication
    */
   private function apply($migration)
   {
-
+    $this->util->writeLine("Feature not yet implemented.");
   }
 
   /**
@@ -141,7 +180,7 @@ class MigrantApplication
    */
   private function reapply($migration)
   {
-
+    $this->util->writeLine("Feature not yet implemented.");
   }
 
   /**
@@ -150,6 +189,6 @@ class MigrantApplication
    */
   private function status()
   {
-
+    $this->util->writeLine("Feature not yet implemented.");
   }
 }
