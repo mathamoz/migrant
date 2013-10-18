@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+
+require 'src/autoload.php';
+
+if (!defined('MIGRANT_VERSION')) {
+  define('MIGRANT_VERSION', '0.1');
+}
+
+
+$migrant = new Migrant\Application\MigrantApplication('Migrant', MIGRANT_VERSION);
+// Get rid of the first arg, it's useless...
+array_shift($argv);
+$migrant->run($argv);
