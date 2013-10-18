@@ -4,7 +4,7 @@
 require 'src/autoload.php';
 
 if (!defined('MIGRANT_VERSION')) {
-  define('MIGRANT_VERSION', '0.3');
+  define('MIGRANT_VERSION', '0.3.1');
 }
 
 
