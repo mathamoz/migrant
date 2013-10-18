@@ -1,0 +1,17 @@
+{
+  "name": "mathamoz/migrant",
+  "type": "utility",
+  "description": "Dead simple sql migrations",
+  "keywords": ["sql","database", "migration"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Joel Weirauch",
+      "email": "jbw@tweakbox.net",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  }
+}
