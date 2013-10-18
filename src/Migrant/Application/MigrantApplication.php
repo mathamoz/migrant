@@ -116,7 +116,7 @@ class MigrantApplication
 
     if (empty($result))
     {
-      $sql = 'CREATE TABLE `identite_local_main`.`migrant_log` (
+      $sql = 'CREATE TABLE `migrant_log` (
               `migration_id` VARCHAR(255) NOT NULL,
               `success` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0,
               `executed` DATETIME NOT NULL,
